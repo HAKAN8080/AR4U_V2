@@ -1,4 +1,4 @@
-sku,MainGroup,SubGroupDesc,year,week,sales,stock,gross_margin,promo
+sku,MainGroupCode,SubGroupCode,year,week,sales,stock,gross_margin,promo
 SKU001,Çarşaf,Lastikli Çarşaf,2023,1,100,500,35,0
 SKU001,Çarşaf,Lastikli Çarşaf,2023,2,110,480,35,0
 SKU001,Çarşaf,Lastikli Çarşaf,2023,44,250,300,35,1
