@@ -1,6 +1,6 @@
 """
 🚀 E-Commerce Sevkiyat Optimizasyon Sistemi
-Ana Streamlit Uygulaması
+Ana Streamlit Uygulaması - ÜST MENÜ VERSİYONU
 """
 import streamlit as st
 import pandas as pd
@@ -15,35 +15,132 @@ from utils.helpers import (
 )
 from utils.constants import KPI_TARGETS, SEGMENT_COLORS, SEGMENT_EMOJI
 
-# Sayfa konfigürasyonu
+# Sayfa konfigürasyonu - YAN MENÜYÜ KAPATIYORUZ
 st.set_page_config(
     page_title="Sevkiyat Optimizasyonu",
     page_icon="📦",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"  # Yan menüyü kapattık
 )
 
-# Custom CSS
+# Custom CSS - ÜST MENÜ STİLLERİ
 st.markdown("""
     <style>
+    /* Yan menüyü tamamen gizle */
+    section[data-testid="stSidebar"] {
+        display: none;
+    }
+    
+    /* Header'ı gizle */
+    header {
+        visibility: hidden;
+    }
+    
+    /* Üst menü konteyneri */
+    .top-menu {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 0;
+        margin: -50px 0 20px 0;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    /* Menü items */
+    .menu-items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+    }
+    
+    /* Menü butonları */
+    .menu-btn {
+        background: none;
+        border: none;
+        color: white;
+        padding: 15px 25px;
+        margin: 0 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 0;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        flex: 1;
+        text-align: center;
+    }
+    
+    .menu-btn:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+    }
+    
+    .menu-btn.active {
+        background: rgba(255,255,255,0.3);
+        border-bottom: 3px solid white;
+    }
+    
+    /* Logo ve başlık */
+    .header-title {
+        text-align: center;
+        padding: 15px;
+        background: rgba(255,255,255,0.1);
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+    
+    /* Ana başlık */
     .main-header {
         font-size: 3rem;
         font-weight: bold;
         text-align: center;
-        margin-bottom: 2rem;
+        margin: 2rem 0;
         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
+    
     .metric-card {
         background-color: #f0f2f6;
         padding: 1.5rem;
         border-radius: 10px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    
     .stAlert {
         padding: 1rem;
         border-radius: 5px;
+    }
+    
+    /* Sayfa içeriği */
+    .page-content {
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Veri yükleme butonu */
+    .data-load-btn {
+        background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-weight: bold;
+        margin: 10px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .data-load-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(255,107,107,0.3);
     }
     </style>
 """, unsafe_allow_html=True)
@@ -55,6 +152,8 @@ if 'df' not in st.session_state:
     st.session_state.df = None
 if 'analyzed' not in st.session_state:
     st.session_state.analyzed = False
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "home"
 
 def load_and_analyze_data():
     """Veri yükle ve analiz et"""
@@ -94,76 +193,114 @@ def load_and_analyze_data():
             show_error("Veri yüklenemedi!")
             return False
 
+def create_top_menu():
+    """Üst menüyü oluştur"""
+    
+    # JavaScript için
+    st.markdown("""
+    <script>
+    function setPage(page) {
+        // Streamlit ile iletişim
+        const data = {page: page};
+        window.parent.postMessage(data, '*');
+    }
+    </script>
+    """, unsafe_allow_html=True)
+    
+    # Üst menü
+    st.markdown("""
+    <div class="top-menu">
+        <div class="header-title">
+            📦 E-Commerce Sevkiyat Optimizasyonu
+        </div>
+        <div class="menu-items">
+            <button class="menu-btn %s" onclick="setPage('home')">🏠 Ana Sayfa</button>
+            <button class="menu-btn %s" onclick="setPage('dashboard')">📊 Dashboard</button>
+            <button class="menu-btn %s" onclick="setPage('analysis')">🔍 Ürün Analizi</button>
+            <button class="menu-btn %s" onclick="setPage('shipment')">📦 Sevkiyat Stratejisi</button>
+            <button class="menu-btn %s" onclick="setPage('alerts')">🚨 Kritik Uyarılar</button>
+            <button class="menu-btn %s" onclick="setPage('settings')">⚙️ Ayarlar</button>
+        </div>
+    </div>
+    """ % (
+        'active' if st.session_state.current_page == 'home' else '',
+        'active' if st.session_state.current_page == 'dashboard' else '',
+        'active' if st.session_state.current_page == 'analysis' else '',
+        'active' if st.session_state.current_page == 'shipment' else '',
+        'active' if st.session_state.current_page == 'alerts' else '',
+        'active' if st.session_state.current_page == 'settings' else ''
+    ), unsafe_allow_html=True)
+
 def main():
     """Ana uygulama"""
     
-    # Header
-    st.markdown('<div class="main-header">📦 Sevkiyat Optimizasyonu</div>', unsafe_allow_html=True)
+    # Üst menüyü oluştur
+    create_top_menu()
     
-    # Sidebar
-    with st.sidebar:
-        st.image("https://img.icons8.com/fluency/96/000000/rocket.png", width=80)
-        st.title("📊 Menü")
-        
-        # Veri yükleme butonu
-        if st.button("🔄 Veriyi Yükle ve Analiz Et", use_container_width=True):
-            load_and_analyze_data()
-        
-        st.divider()
-        
-        # Menü
-        page = st.radio(
-            "Sayfalar",
-            [
-                "🏠 Ana Sayfa",
-                "📊 Dashboard",
-                "🔍 Ürün Analizi",
-                "📦 Sevkiyat Stratejisi",
-                "🚨 Kritik Uyarılar",
-                "⚙️ Ayarlar"
-            ],
-            label_visibility="collapsed"
-        )
-        
-        # Veri durumu
-        st.divider()
-        if st.session_state.data_loaded:
-            st.success("✅ Veri yüklü")
-            st.caption(f"📦 {len(st.session_state.df)} ürün")
-        else:
-            st.warning("⚠️ Veri yüklenmedi")
-            st.caption("Yukarıdaki butona tıklayın")
+    # Veri yükleme butonu - üstte
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🔄 VERİYİ YÜKLE VE ANALİZ ET", 
+                    use_container_width=True, 
+                    type="primary" if not st.session_state.data_loaded else "secondary"):
+            if load_and_analyze_data():
+                st.rerun()
     
-    # Ana içerik
-    if page == "🏠 Ana Sayfa":
+    # Veri durumu göstergesi
+    if st.session_state.data_loaded:
+        st.success(f"✅ Veri yüklü - {len(st.session_state.df)} ürün analiz edildi")
+    else:
+        st.warning("⚠️ Lütfen veriyi yükleyin")
+    
+    st.markdown('<div class="page-content">', unsafe_allow_html=True)
+    
+    # Sayfa içerikleri
+    if st.session_state.current_page == "home":
         show_home_page()
-    elif page == "📊 Dashboard":
+    elif st.session_state.current_page == "dashboard":
         if st.session_state.data_loaded:
             show_dashboard_page()
         else:
             st.warning("⚠️ Lütfen önce veriyi yükleyin!")
-    elif page == "🔍 Ürün Analizi":
+    elif st.session_state.current_page == "analysis":
         if st.session_state.data_loaded:
             show_product_analysis_page()
         else:
             st.warning("⚠️ Lütfen önce veriyi yükleyin!")
-    elif page == "📦 Sevkiyat Stratejisi":
+    elif st.session_state.current_page == "shipment":
         if st.session_state.data_loaded:
             show_shipment_strategy_page()
         else:
             st.warning("⚠️ Lütfen önce veriyi yükleyin!")
-    elif page == "🚨 Kritik Uyarılar":
+    elif st.session_state.current_page == "alerts":
         if st.session_state.data_loaded:
             show_alerts_page()
         else:
             st.warning("⚠️ Lütfen önce veriyi yükleyin!")
-    elif page == "⚙️ Ayarlar":
+    elif st.session_state.current_page == "settings":
         show_settings_page()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# JavaScript event listener için
+components.html("""
+<script>
+window.addEventListener('message', function(event) {
+    if (event.data && event.data.page) {
+        // Streamlit'e mesaj gönder
+        window.parent.postMessage({
+            type: 'streamlit:setComponentValue',
+            value: event.data.page
+        }, '*');
+    }
+});
+</script>
+""", height=0)
 
 def show_home_page():
     """Ana sayfa"""
     
-    st.markdown("## 👋 Hoşgeldiniz!")
+    st.markdown('<div class="main-header">👋 Hoşgeldiniz!</div>', unsafe_allow_html=True)
     
     st.markdown("""
     Bu sistem, e-ticaret operasyonlarınızda ürün sevkiyatını optimize etmek için geliştirilmiştir.
@@ -178,9 +315,9 @@ def show_home_page():
     
     ### 🚀 Başlamak için:
     
-    1. Sol menüden **"Veriyi Yükle ve Analiz Et"** butonuna tıklayın
+    1. Yukarıdaki **"VERİYİ YÜKLE VE ANALİZ ET"** butonuna tıklayın
     2. Sistem otomatik olarak analizleri çalıştıracak
-    3. Menüden istediğiniz sayfaya gidin
+    3. Üst menüden istediğiniz sayfaya gidin
     """)
     
     # Quick stats (eğer veri yüklüyse)
@@ -396,17 +533,17 @@ def show_dashboard_page():
             )
 
 def show_product_analysis_page():
-    """Ürün analizi sayfası (placeholder)"""
+    """Ürün analizi sayfası"""
     st.markdown("## 🔍 Ürün Analizi")
     st.info("Bu sayfa yakında eklenecek...")
 
 def show_shipment_strategy_page():
-    """Sevkiyat stratejisi sayfası (placeholder)"""
+    """Sevkiyat stratejisi sayfası"""
     st.markdown("## 📦 Sevkiyat Stratejisi")
     st.info("Bu sayfa yakında eklenecek...")
 
 def show_alerts_page():
-    """Kritik uyarılar sayfası (placeholder)"""
+    """Kritik uyarılar sayfası"""
     st.markdown("## 🚨 Kritik Uyarılar")
     
     alerts_df = st.session_state.alerts_df
@@ -450,7 +587,7 @@ def show_alerts_page():
                 st.metric("Günlük Satış", f"{alert['forecasted_sales']:.1f}")
 
 def show_settings_page():
-    """Ayarlar sayfası (placeholder)"""
+    """Ayarlar sayfası"""
     st.markdown("## ⚙️ Ayarlar")
     st.info("Bu sayfa yakında eklenecek...")
 
