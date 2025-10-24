@@ -1,13 +1,13 @@
-sku,product_name,category,tip,price,margin_pct,stock_akyazi,stock_ana_depo,stock_oms_total,daily_sales_avg_30d,daily_sales_avg_7d,daily_sales_yesterday,view_count_7d,add_to_cart_7d,favorites_7d,review_count,avg_rating,stock_out_days_last_30d,last_restock_date,campaign_flag
-SKU001,Beyaz Havlu Seti,Tekstil,2,299.90,45,150,0,320,12,18,25,2400,180,45,89,4.5,0,2024-10-15,1
-SKU002,Kahve Fincanı Takımı,Mutfak,2,450.00,50,80,0,150,8,22,35,3200,280,90,156,4.8,2,2024-10-10,1
-SKU003,Yatak Örtüsü King,Tekstil,1,1200.00,55,25,100,200,15,28,42,4500,320,110,234,4.7,0,2024-10-18,1
-SKU004,Dekoratif Yastık,Dekorasyon,2,180.00,40,200,0,180,5,6,8,1200,80,25,45,4.2,0,2024-10-12,0
-SKU005,Tuzluk Biberlik Set,Mutfak,2,120.00,35,50,0,80,3,2,1,600,30,10,23,4.0,5,2024-09-28,0
-SKU006,Pamuklu Nevresim,Tekstil,1,950.00,52,40,120,180,18,25,30,3800,290,85,178,4.6,1,2024-10-16,1
-SKU007,Bardak Altlığı 6lı,Mutfak,2,85.00,30,300,0,220,2,1,0,400,20,8,12,3.8,8,2024-09-15,0
-SKU008,Kış Battaniye,Tekstil,1,680.00,58,80,200,450,25,45,68,5200,420,150,312,4.9,0,2024-10-20,1
-SKU009,Mutfak Havlusu 3lü,Tekstil,2,150.00,38,120,0,160,6,8,12,1800,95,30,67,4.3,0,2024-10-14,0
-SKU010,Porselen Servis Tabağı,Mutfak,1,350.00,48,60,180,240,10,18,22,2800,210,65,145,4.4,3,2024-10-08,1
-SKU011,Lüks Bornoz,Tekstil,2,850.00,60,45,0,95,4,12,20,2100,160,55,89,4.7,0,2024-10-17,1
-SKU012,Yılbaşı Yastık Kılıfı,Dekorasyon,2,95.00,42,180,0,140,3,15,28,1900,185,70,34,4.5,0,2024-10-19,1
+sku,product_name,category,maingroup,SubGroup,tip,price,margin_pct,stock_akyazi,stock_ana_depo,stock_oms_total,daily_sales_avg_30d,daily_sales_avg_7d,daily_sales_yesterday,view_count_7d,add_to_cart_7d,favorites_7d,review_count,avg_rating,stock_out_days_last_30d,last_restock_date,campaign_flag
+SKU001,Beyaz Havlu Seti,Tekstil,1,1,2,299.90,45,150,0,320,12,18,25,2400,180,45,89,4.5,0,2024-10-15,1
+SKU002,Kahve Fincanı Takımı,Mutfak,1,2,2,450.00,50,80,0,150,8,22,35,3200,280,90,156,4.8,2,2024-10-10,1
+SKU003,Yatak Örtüsü King,Tekstil,1,1,1,1200.00,55,25,100,200,15,28,42,4500,320,110,234,4.7,0,2024-10-18,1
+SKU004,Dekoratif Yastık,Dekorasyon,1,2,2,180.00,40,200,0,180,5,6,8,1200,80,25,45,4.2,0,2024-10-12,0
+SKU005,Tuzluk Biberlik Set,Mutfak,1,1,2,120.00,35,50,0,80,3,2,1,600,30,10,23,4.0,5,2024-09-28,0
+SKU006,Pamuklu Nevresim,Tekstil,1,1,1,950.00,52,40,120,180,18,25,30,3800,290,85,178,4.6,1,2024-10-16,1
+SKU007,Bardak Altlığı 6lı,Mutfak,1,2,2,85.00,30,300,0,220,2,1,0,400,20,8,12,3.8,8,2024-09-15,0
+SKU008,Kış Battaniye,Tekstil,1,1,1,680.00,58,80,200,450,25,45,68,5200,420,150,312,4.9,0,2024-10-20,1
+SKU009,Mutfak Havlusu 3lü,Tekstil,1,1,2,150.00,38,120,0,160,6,8,12,1800,95,30,67,4.3,0,2024-10-14,0
+SKU010,Porselen Servis Tabağı,Mutfak,1,2,1,350.00,48,60,180,240,10,18,22,2800,210,65,145,4.4,3,2024-10-08,1
+SKU011,Lüks Bornoz,Tekstil,1,2,2,850.00,60,45,0,95,4,12,20,2100,160,55,89,4.7,0,2024-10-17,1
+SKU012,Yılbaşı Yastık Kılıfı,Dekorasyon,1,1,2,95.00,42,180,0,140,3,15,28,1900,185,70,34,4.5,0,2024-10-19,1
