@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Streamlit
+.streamlit/secrets.toml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (eğer hassas veri varsa)
+# data/*.csv
+
+# Logs
+*.log
+
+# Environment variables
+.env
+```
+
+**GitHub'da oluştururken:**
+- Dosya adı: `.gitignore` (nokta ile başlamalı!)
+- Yukarıdaki içeriği yapıştır
+- Commit: `🚫 Add gitignore`
+
+---
+
+## 2️⃣ **\_\_init\_\_.py Her İki Klasörde de Var - NORMAL! ✅**
+
+**Evet, kesinlikle normal!** 
+
+Python'da her klasörü **"package"** yapmak için içinde `__init__.py` olmalı.
+```
+modules/
+├── __init__.py          ✅ Bu olmalı
+├── data_loader.py
+├── analytics_engine.py
+└── ...
+
+utils/
+├── __init__.py          ✅ Bu da olmalı
+├── constants.py
+└── helpers.py
