@@ -282,20 +282,24 @@ def main():
     
     st.markdown('</div>', unsafe_allow_html=True)
 
-# JavaScript event listener için
-components.html("""
+# Basit bir JavaScript alternatifi - components olmadan
+st.markdown("""
 <script>
-window.addEventListener('message', function(event) {
-    if (event.data && event.data.page) {
-        // Streamlit'e mesaj gönder
-        window.parent.postMessage({
-            type: 'streamlit:setComponentValue',
-            value: event.data.page
-        }, '*');
-    }
-});
+// Sayfa değişimi için basit bir çözüm
+function handleMenuClick(pageName) {
+    // Sayfayı yenile ve URL parametresi ekle (basit çözüm)
+    window.location.href = window.location.pathname + '?page=' + pageName;
+}
+
+// Mevcut URL'den sayfa bilgisini al
+const urlParams = new URLSearchParams(window.location.search);
+const currentPage = urlParams.get('page');
+if (currentPage) {
+    // Streamlit'e sayfa bilgisini iletmek için bir mesaj gönder
+    window.parent.postMessage({type: 'PAGE_CHANGE', page: currentPage}, '*');
+}
 </script>
-""", height=0)
+""", unsafe_allow_html=True)
 
 def show_home_page():
     """Ana sayfa"""
