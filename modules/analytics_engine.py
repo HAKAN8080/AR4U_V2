@@ -6,18 +6,36 @@ import numpy as np
 from utils.constants import DEFAULT_SEGMENT_PARAMS, METRIC_WEIGHTS
 from utils.helpers import safe_divide
 
+# Seasonal forecaster import (opsiyonel)
+try:
+    from modules.seasonal_forecaster import SeasonalForecaster
+    SEASONAL_AVAILABLE = True
+except:
+    SEASONAL_AVAILABLE = False
+
 class AnalyticsEngine:
     """Ürün analizi ve segmentasyon motoru"""
     
-    def __init__(self, df, segment_params=None):
+    def __init__(self, df, segment_params=None, historical_data_path=None):
         """
         Args:
             df: Ürün dataframe
             segment_params: Özel segment parametreleri (opsiyonel)
+            historical_data_path: Historik satış verisi CSV yolu (opsiyonel)
         """
         self.df = df.copy()
         self.segment_params = segment_params or DEFAULT_SEGMENT_PARAMS
         self.segments = {}
+        
+        # Seasonal forecaster'ı yükle (varsa)
+        self.seasonal_forecaster = None
+        if SEASONAL_AVAILABLE and historical_data_path:
+            try:
+                self.seasonal_forecaster = SeasonalForecaster(historical_data_path)
+                print("✅ Seasonal forecasting aktif")
+            except Exception as e:
+                print(f"⚠️ Seasonal forecasting yüklenemedi: {e}")
+                self.seasonal_forecaster = None
     
     def calculate_all_metrics(self):
         """Tüm metrikleri hesapla"""
@@ -70,7 +88,12 @@ class AnalyticsEngine:
         # 8. Campaign Boost
         self.df['campaign_boost'] = self.df['campaign_flag'] * 1.3 + (1 - self.df['campaign_flag']) * 1.0
         
-        # 9. Final Score (Ağırlıklı toplam)
+        # 9. Seasonal Adjustment (eğer aktifse)
+        self.df['seasonal_factor'] = 1.0  # Default
+        if self.seasonal_forecaster:
+            self._apply_seasonal_adjustment()
+        
+        # 10. Final Score (Ağırlıklı toplam)
         self.df['final_score'] = (
             self.df['velocity_score'] * METRIC_WEIGHTS['velocity_score'] +
             self.df['trend_score'] * METRIC_WEIGHTS['trend_score'] +
@@ -78,8 +101,35 @@ class AnalyticsEngine:
             self.df['conversion_rate'] * METRIC_WEIGHTS['conversion_rate'] +
             self.df['quality_score'] * METRIC_WEIGHTS['quality_score'] +
             self.df['stockout_penalty'] * METRIC_WEIGHTS['stockout_penalty']
-        ) * self.df['campaign_boost']
+        ) * self.df['campaign_boost'] * self.df['seasonal_factor']  # Seasonal ekledik!
         
+        return self.df
+    
+    def _apply_seasonal_adjustment(self):
+        """
+        Her ürün için seasonal factor hesapla ve ekle
+        """
+        seasonal_factors = []
+        
+        for idx, row in self.df.iterrows():
+            # Ürün bilgilerini al
+            sku = row.get('sku', None)
+            subcat = row.get('SubGroupDesc', None)
+            maingroup = row.get('MainGroup', None)
+            is_promo = row.get('campaign_flag', 0) == 1
+            
+            # Seasonal factor al
+            seasonal_info = self.seasonal_forecaster.get_seasonal_factor(
+                sku=sku,
+                subcat=subcat,
+                maingroup=maingroup,
+                is_promo=is_promo
+            )
+            
+            seasonal_factors.append(seasonal_info['factor'])
+        
+        self.df['seasonal_factor'] = seasonal_factors
+    
         return self.df
     
     def segment_products(self):
