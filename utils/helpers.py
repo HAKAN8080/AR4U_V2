@@ -3,6 +3,7 @@ Yardımcı Fonksiyonlar
 """
 import pandas as pd
 import streamlit as st
+import numpy as np  # Bu satırı ekleyin
 from datetime import datetime, timedelta
 from utils.constants import SEGMENT_COLORS, SEGMENT_EMOJI, ALERT_LEVELS
 
