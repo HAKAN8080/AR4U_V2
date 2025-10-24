@@ -66,7 +66,7 @@ def load_and_analyze_data():
         
         if df is not None:
             # Analytics engine (seasonal forecasting ile)
-            historical_path = 'data/historical_sales.csv'  # Opsiyonel
+            # historical_path = 'data/historical_sales.csv'  # Opsiyonel
             analytics = AnalyticsEngine(df, historical_data_path=historical_path)
             df = analytics.calculate_all_metrics()
             df = analytics.segment_products()
