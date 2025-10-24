@@ -43,12 +43,26 @@ def create_metric_card(title, value, delta=None, help_text=None):
         else:
             st.metric(label=title, value=value, help=help_text)
 
-def safe_divide(numerator, denominator, default=0):
-    """Güvenli bölme işlemi"""
-    if denominator == 0 or pd.isna(denominator) or pd.isna(numerator):
+def safe_divide(numerator, denominator, default=0.0):
+    """
+    Güvenli bölme işlemi - pandas Series/DataFrame ile uyumlu
+    """
+    try:
+        # Pandas Series için vektörel işlem
+        if hasattr(denominator, '__iter__') or hasattr(numerator, '__iter__'):
+            result = numerator / denominator
+            # Sıfır bölme ve NaN durumlarını kontrol et
+            result = result.replace([np.inf, -np.inf], default)
+            result = result.fillna(default)
+            return result
+        else:
+            # Skaler değerler için
+            if denominator == 0 or pd.isna(denominator) or pd.isna(numerator):
+                return default
+            return numerator / denominator
+    except (ZeroDivisionError, TypeError, ValueError):
         return default
-    return numerator / denominator
-
+        
 def calculate_days_between(date_str, reference_date=None):
     """İki tarih arasındaki gün farkını hesapla"""
     if reference_date is None:
