@@ -10,6 +10,7 @@ from modules.allocation_optimizer import AllocationOptimizer
 from modules.alert_manager import AlertManager
 from modules.visualizations import Visualizations
 from shipment_strategy_page import show_shipment_strategy_page
+from settings_page import show_settings_page
 from utils.helpers import (
     format_number, format_currency, format_percentage,
     show_success, show_error, show_info
@@ -66,14 +67,18 @@ def load_and_analyze_data():
         df = loader.load_sample_data()
         
         if df is not None:
+            # Custom parametreleri al (varsa)
+            segment_params = st.session_state.get('custom_segment_params', None)
+            transfer_lead_time = st.session_state.get('custom_transfer_lead_time', 5)
+            
             # Analytics engine (seasonal forecasting ile)
             historical_path = 'data/historical_sales.csv'  # Opsiyonel
-            analytics = AnalyticsEngine(df, historical_data_path=historical_path)
+            analytics = AnalyticsEngine(df, segment_params=segment_params, historical_data_path=historical_path)
             df = analytics.calculate_all_metrics()
             df = analytics.segment_products()
             
             # Allocation optimizer
-            optimizer = AllocationOptimizer(df)
+            optimizer = AllocationOptimizer(df, segment_params=segment_params, transfer_lead_time=transfer_lead_time)
             allocation_df = optimizer.generate_allocation_strategy()
             
             # Alert manager
@@ -454,11 +459,6 @@ def show_alerts_page():
             with col2:
                 st.metric("Stok Günü", f"{alert['days_of_stock']:.1f}")
                 st.metric("Günlük Satış", f"{alert['forecasted_sales']:.1f}")
-
-def show_settings_page():
-    """Ayarlar sayfası (placeholder)"""
-    st.markdown("## ⚙️ Ayarlar")
-    st.info("Bu sayfa yakında eklenecek...")
 
 if __name__ == "__main__":
     main()
