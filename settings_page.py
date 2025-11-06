@@ -1,5 +1,5 @@
 """
-Ayarlar Sayfası - Sistem Parametrelerini Düzenleme
+Ayarlar Sayfası - Sistem Parametrelerini Düzenleme*
 """
 import streamlit as st
 import pandas as pd
