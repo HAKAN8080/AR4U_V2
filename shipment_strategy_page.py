@@ -140,12 +140,7 @@ def show_transfer_recommendations_tab(optimizer, allocation_df, df):
                     'days_until_stockout_akyazi': '{:.1f}',
                     'stock_consumed_during_transfer': '{:.1f}',
                     'forecasted_daily_sales': '{:.2f}'
-                }).background_gradient(
-                    subset=['days_until_stockout_akyazi'],
-                    cmap='RdYlGn',
-                    vmin=0,
-                    vmax=TRANSFER_LEAD_TIME_DAYS
-                ),
+                }),
                 use_container_width=True,
                 hide_index=True,
                 height=400
@@ -319,12 +314,7 @@ def show_reorder_recommendations_tab(optimizer, allocation_df, df):
                 'reorder_point': '{:.0f}',
                 'days_of_stock': '{:.1f}',
                 'suggested_order_qty': '{:.0f}'
-            }).background_gradient(
-                subset=['days_of_stock'],
-                cmap='RdYlGn_r',  # Reverse: Düşük = kırmızı
-                vmin=0,
-                vmax=10
-            ),
+            }),
             use_container_width=True,
             hide_index=True,
             height=400
