@@ -9,6 +9,7 @@ from modules.analytics_engine import AnalyticsEngine
 from modules.allocation_optimizer import AllocationOptimizer
 from modules.alert_manager import AlertManager
 from modules.visualizations import Visualizations
+from shipment_strategy_page import show_shipment_strategy_page
 from utils.helpers import (
     format_number, format_currency, format_percentage,
     show_success, show_error, show_info
@@ -173,7 +174,7 @@ def show_home_page():
     
     - **📊 Dashboard**: Genel görünüm ve KPI'lar
     - **🔍 Ürün Analizi**: Detaylı ürün bazlı analiz
-    - **📦 Sevkiyat Stratejisi**: Optimal sevkiyat planları
+    - **📦 Sevkiyat Stratejisi**: Optimal sevkiyat planları (✨ YENİ!)
     - **🚨 Kritik Uyarılar**: Acil aksiyon gerektiren durumlar
     - **⚙️ Ayarlar**: Segment parametrelerini özelleştir
     
@@ -182,6 +183,15 @@ def show_home_page():
     1. Sol menüden **"Veriyi Yükle ve Analiz Et"** butonuna tıklayın
     2. Sistem otomatik olarak analizleri çalıştıracak
     3. Menüden istediğiniz sayfaya gidin
+    
+    ### ⭐ Yeni Özellik: Sevkiyat Stratejisi
+    
+    **5 günlük transfer lead time** ile:
+    - 🚨 Acil transfer önerileri
+    - 🤖 Otomatik transfer sistemi
+    - 🎮 Transfer simülatörü
+    - 🏷️ Markdown adayları
+    - 📊 Depo optimizasyonu
     """)
     
     # Quick stats (eğer veri yüklüyse)
@@ -401,13 +411,8 @@ def show_product_analysis_page():
     st.markdown("## 🔍 Ürün Analizi")
     st.info("Bu sayfa yakında eklenecek...")
 
-def show_shipment_strategy_page():
-    """Sevkiyat stratejisi sayfası (placeholder)"""
-    st.markdown("## 📦 Sevkiyat Stratejisi")
-    st.info("Bu sayfa yakında eklenecek...")
-
 def show_alerts_page():
-    """Kritik uyarılar sayfası (placeholder)"""
+    """Kritik uyarılar sayfası"""
     st.markdown("## 🚨 Kritik Uyarılar")
     
     alerts_df = st.session_state.alerts_df
