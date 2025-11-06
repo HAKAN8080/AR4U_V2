@@ -143,24 +143,30 @@ KPI_TARGETS = {
     'markdown_max': 10,  # Maksimum %10 markdown
 }
 
+# Transfer bilgileri
+TRANSFER_LEAD_TIME_DAYS = 5  # 🚛 Ana Depo → Akyazı transfer süresi (gün)
+
 # Depo bilgileri
 DEPOT_INFO = {
     'akyazi': {
         'name': 'Akyazı E-com Deposu',
         'type': 'e-commerce',
         'capacity': 10000,  # placeholder
-        'emoji': '🏢'
+        'emoji': '🏢',
+        'lead_time_days': 0  # Zaten hazır
     },
     'ana_depo': {
         'name': 'Ana Depo',
         'type': 'main',
         'capacity': 50000,
-        'emoji': '🏭'
+        'emoji': '🏭',
+        'lead_time_days': TRANSFER_LEAD_TIME_DAYS  # 5 gün transfer süresi
     },
     'oms': {
         'name': 'OMS Mağazalar',
         'type': 'stores',
         'capacity': 20000,
-        'emoji': '🏪'
+        'emoji': '🏪',
+        'lead_time_days': 0  # Zaten mağazalarda
     }
 }
